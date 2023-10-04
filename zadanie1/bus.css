@@ -21,7 +21,7 @@ body {
 .road {
     position: absolute;
     top: 60%;
-    height: 15%;
+    height: 15vh;
     width: 100%;
     background: #515151;
 }
@@ -42,62 +42,61 @@ body {
 .bus {
 
     position: absolute;
-    top: 50%;
+    bottom: 17vh;
     left: 30%;
 }
 
 .upper-part {
     position: absolute;
     background: lightgreen;
-    left: 50px;
-    width: 300px;
-    height: 75px;
-    bottom: -5px;
-    border: 5px solid black;
+    left: 7vh;
+    width: 40vh;
+    height: 10vh;
+    top: -10vh;
+    border: 1vh solid black;
     outline-offset: 5px;
     border-bottom: none;
-    border-radius: 25px 25px 0px 0px;
+    border-radius: 4vh 4vh 0px 0px;
 }
 
 .front {
     position: absolute;
-    width: 50px;
-    height: 100px;
+    width: 8vh;
+    height: 12vh;
     background: lightgreen;
-    border: 5px solid black;
+    border: 1vh solid black;
     border-right: none;
-    border-radius: 25px 0px 0px 25px;
+    border-radius: 4vh 0px 0px 4vh;
 }
 
 
 .bottom {
     position: absolute;
     background: lightgreen;
-    width: 300px;
-    height: 100px;
-    left: 50px;
-    border-bottom: 5px solid black;
-    border-right: 5px solid black;
-    border-radius: 0px 0px 25px 0px;
+    width: 40vh;
+    height: 12vh;
+    left: 7vh;
+    border-bottom: 1vh solid black;
+    border-right: 1vh solid black;
+    border-radius: 0px 0px 4vh 0px;
 }
 
 .front-wheel {
     position: absolute;
-    top: 60px;
-    left: 70px;
+    top: 7vh;
+    left: 9vh;
 }
 
 .back-wheel {
     position: absolute;
-    top: 60px;
-
-    left: 250px;
+    top: 7vh;
+    left: 33vh;
 }
 
 .wheel {
     background: #A3A3A3;
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    border: 15px solid black;
+    width: 9vh;
+    height: 9vh;
+    border-radius: 9vh;
+    border: 2vh solid black;
 }
