@@ -1,3 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    background: #66ccff;
+    background: #2e4482;
+}
+
+
+
+.land {
+    position: absolute;
+    top: 55%;
+    height: 45%;
+    width: 100%;
+    background: #015501;
+}
+
+.road {
+    position: absolute;
+    top: 60%;
+    height: 15%;
+    width: 100%;
+    background: #515151;
+}
+
+.moon {
+    position: absolute;
+    top: 6vh;
+    right: 6vh;
+    width: 10vh;
+    min-height: 50px;
+    min-width: 50px;
+    height: 10vh;
+    border-radius: 50%;
+    background: #c9c9c9;
+}
+
+
+.bus {
+
+    position: absolute;
+    top: 60%;
+    left: 30%;
+    height: 50px;
+    width: 300px;
+    background: #d80000;
+    /* border-radius: 50% / 200%; */
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+
 }
