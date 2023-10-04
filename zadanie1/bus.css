@@ -144,3 +144,28 @@ body {
     top: 2vh;
     left: 36vh;
 }
+
+.front-light {
+    position: absolute;
+    background-color: yellow;
+    top: 3vh;
+    width: 2vh;
+    height: 4vh;
+    border-top: 0.7vh solid black;
+    border-right: 0.7vh solid black;
+    border-bottom: 0.7vh solid black;
+    border-radius: 0 1vh 1vh 0;
+}
+
+.back-light {
+    position: absolute;
+    background-color: red;
+    left: 44vh;
+    top: 3vh;
+    width: 2vh;
+    height: 4vh;
+    border-top: 0.7vh solid black;
+    border-left: 0.7vh solid black;
+    border-bottom: 0.7vh solid black;
+    border-radius: 1vh 0 0 1vh;
+}
