@@ -50,9 +50,9 @@ body {
     position: absolute;
     background: lightgreen;
     left: 7vh;
-    width: 40vh;
-    height: 10vh;
-    top: -10vh;
+    width: 47vh;
+    height: 14vh;
+    top: -14vh;
     border: 1vh solid black;
     outline-offset: 5px;
     border-bottom: none;
@@ -73,7 +73,7 @@ body {
 .bottom {
     position: absolute;
     background: lightgreen;
-    width: 40vh;
+    width: 47vh;
     height: 12vh;
     left: 7vh;
     border-bottom: 1vh solid black;
@@ -90,7 +90,7 @@ body {
 .back-wheel {
     position: absolute;
     top: 7vh;
-    left: 33vh;
+    left: 38vh;
 }
 
 .wheel {
@@ -99,4 +99,48 @@ body {
     height: 9vh;
     border-radius: 9vh;
     border: 2vh solid black;
+}
+
+.front-window {
+    position: absolute;
+    top: 2vh;
+    background-color: white;
+    width: 4vh;
+    height: 12vh;
+    border-radius: 0 3vh 3vh 0;
+    border-top: 0.7vh solid black;
+    border-right: 0.7vh solid black;
+    border-bottom: 0.7vh solid black;
+}
+
+.window {
+    background-color: white;
+    width: 8vh;
+    height: 12vh;
+    border-radius: 3vh;
+    border: 0.7vh solid black;
+}
+
+.window1 {
+    position: absolute;
+    top: 2vh;
+    left: 6vh;
+}
+
+.window2 {
+    position: absolute;
+    top: 2vh;
+    left: 16vh;
+}
+
+.window3 {
+    position: absolute;
+    top: 2vh;
+    left: 26vh;
+}
+
+.window4 {
+    position: absolute;
+    top: 2vh;
+    left: 36vh;
 }
