@@ -22,7 +22,24 @@ let initList = function () {
     }
 }
 
-initList();
+//initList();
+
+const BASE_URL = "https://api.jsonbin.io/v3/b/651f1cba0574da7622b4e984";
+const SECRET_KEY = "$2a$10$2InDCfc1/HvrK1asONakfO.KX90QO2Pwxx9nPm/PSdnWOqCO1ixfe";
+$.ajax({
+    url: BASE_URL,
+    type: 'GET',
+    headers: {
+        'X-Master-Key': SECRET_KEY
+    },
+    success: (data) => {
+        console.log(data.record);
+        todoList = data.record;
+    },
+    error: (err) => {
+        console.log(err.responseJSON);
+    }
+});
 
 let updateTodoList = function () {
     let todoListDiv = document.getElementById("todoListView");
@@ -37,11 +54,19 @@ let updateTodoList = function () {
             (todoList[todo].title.includes(filterInput.value)) ||
             (todoList[todo].description.includes(filterInput.value))
         ) {
+            let newDeleteButton = document.createElement("input");
+            newDeleteButton.type = "button";
+            newDeleteButton.value = "x";
+            newDeleteButton.addEventListener("click",
+                function () {
+                    deleteTodo(todo);
+                });
             let newElement = document.createElement("p");
             let newContent = document.createTextNode(todoList[todo].title + " " +
                 todoList[todo].description);
             newElement.appendChild(newContent);
             todoListDiv.appendChild(newElement);
+            newElement.appendChild(newDeleteButton);
         }
     }
 }
@@ -50,6 +75,7 @@ setInterval(updateTodoList, 1000);
 
 let deleteTodo = function (index) {
     todoList.splice(index, 1);
+    updateJSONbin();
 }
 
 let addTodo = function () {
@@ -68,5 +94,23 @@ let addTodo = function () {
         dueDate: newDate
     };
     todoList.push(newTodo);
-    window.localStorage.setItem("todos", JSON.stringify(todoList));
+    updateJSONbin();
 }
+
+let updateJSONbin = function () {
+    $.ajax({
+        url: BASE_URL,
+        type: 'PUT',
+        headers: {
+            'X-Master-Key': SECRET_KEY
+        },
+        contentType: 'application/json',
+        data: JSON.stringify(todoList),
+        success: (data) => {
+            console.log(data);
+        },
+        error: (err) => {
+            console.log(err.responseJSON);
+        }
+    })
+};
