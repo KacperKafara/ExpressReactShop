@@ -42,9 +42,9 @@ $.ajax({
 });
 
 let updateTodoList = function () {
-    let todoListDiv = document.getElementById("todoListView");
-    while (todoListDiv.firstChild) {
-        todoListDiv.removeChild(todoListDiv.firstChild);
+    const todoTable = document.querySelector("#table");
+    while (todoTable.firstChild) {
+        todoTable.removeChild(todoTable.firstChild);
     }
 
     let filterInput = document.getElementById("inputSearch");
@@ -54,19 +54,15 @@ let updateTodoList = function () {
             (todoList[todo].title.includes(filterInput.value)) ||
             (todoList[todo].description.includes(filterInput.value))
         ) {
-            let newDeleteButton = document.createElement("input");
-            newDeleteButton.type = "button";
-            newDeleteButton.value = "x";
-            newDeleteButton.addEventListener("click",
-                function () {
-                    deleteTodo(todo);
-                });
-            let newElement = document.createElement("p");
-            let newContent = document.createTextNode(todoList[todo].title + " " +
-                todoList[todo].description);
-            newElement.appendChild(newContent);
-            todoListDiv.appendChild(newElement);
-            newElement.appendChild(newDeleteButton);
+            todoTable.innerHTML += `
+                <tr>
+                    <td>${todoList[todo].title}</td>
+                    <td>${todoList[todo].description}</td>
+                    <td>${todoList[todo].place}</td>
+                    <td>${todoList[todo].dueDate}</td>
+                    <td><button onclick="deleteTodo(${todo})">X</button></td>
+                </tr>
+            `
         }
     }
 }
