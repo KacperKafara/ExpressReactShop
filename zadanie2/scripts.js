@@ -41,38 +41,21 @@ $.ajax({
     }
 });
 
-function compareDates(date1, date2) {
-    let timestamp1 = date1.getTime();
-    let timestamp2 = date2.getTime();
-
-    if (timestamp1 < timestamp2) {
-        return true;
-    } else if (timestamp1 >= timestamp2) {
-        return false;
-    }
-}
 
 function dateFilteredList() {
-    let newTodoList = [];
+    if ($("#startDate").val() === '' || $("#endDate").val() === '' || new Date($("#startDate").val()) > new Date($("#endDate").val())) {
+        return todoList;
+    }
     let startDate = new Date($("#startDate").val());
     let endDate = new Date($("#endDate").val());
-    for (let todo in todoList) {
-        if (compareDates(new Date(todoList[todo].dueDate), startDate)) continue;
-        else if (compareDates(new Date(todoList[todo].dueDate), endDate)) continue;
-        newTodoList.push(todoList[todo]);
-    }
+
+    let newTodoList = todoList.filter((element) => {
+        let dueDate = new Date(element.dueDate);
+        return dueDate < endDate && dueDate > startDate;
+    });
+
     return newTodoList;
 }
-
-function aaa() {
-    console.log(new Date(todoList[0].dueDate));
-    console.log(new Date(todoList[1].dueDate));
-    console.log(new Date(todoList[2].dueDate));
-    console.log(new Date($("#startDate").val()));
-    console.log(new Date($("#endDate").val()));
-}
-
-setTimeout(aaa, 10000);
 
 let updateTodoList = function () {
     $("#table-body").empty();
@@ -81,22 +64,23 @@ let updateTodoList = function () {
     let newTodoList = dateFilteredList();
 
     for (let todo in newTodoList) {
-
+        // for (var todo = 0; todo < newTodoList.length; todo++) {
         if (
             (filterInput == "") ||
-            (todoList[todo].title.includes(filterInput)) ||
-            (todoList[todo].description.includes(filterInput))
+            (newTodoList[todo].title.includes(filterInput)) ||
+            (newTodoList[todo].description.includes(filterInput))
         ) {
             $("#table-body").append(`
             <tr>
-                <td>${todoList[todo].title}</td>
-                <td>${todoList[todo].description}</td>
-                <td>${todoList[todo].place}</td>
-                <td>${new Date(todoList[todo].dueDate).toLocaleDateString()}</td>
+                <td>${newTodoList[todo].title}</td>
+                <td>${newTodoList[todo].description}</td>
+                <td>${newTodoList[todo].place}</td>
+                <td>${new Date(newTodoList[todo].dueDate).toLocaleDateString()}</td>
                 <td><button type="button" class="btn btn-danger" onclick="deleteTodo(${todo})">X</button></td>
             </tr>
         `);
         }
+        // }
     }
 }
 
