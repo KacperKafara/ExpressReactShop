@@ -42,27 +42,24 @@ $.ajax({
 });
 
 let updateTodoList = function () {
-    const todoTable = document.querySelector("#table");
-    while (todoTable.firstChild) {
-        todoTable.removeChild(todoTable.firstChild);
-    }
+    $("#table-body").empty();
 
-    let filterInput = document.getElementById("inputSearch");
+    let filterInput = $("#inputSearch").val();
     for (let todo in todoList) {
         if (
-            (filterInput.value == "") ||
-            (todoList[todo].title.includes(filterInput.value)) ||
-            (todoList[todo].description.includes(filterInput.value))
+            (filterInput == "") ||
+            (todoList[todo].title.includes(filterInput)) ||
+            (todoList[todo].description.includes(filterInput))
         ) {
-            todoTable.innerHTML += `
-                <tr>
-                    <td>${todoList[todo].title}</td>
-                    <td>${todoList[todo].description}</td>
-                    <td>${todoList[todo].place}</td>
-                    <td>${todoList[todo].dueDate}</td>
-                    <td><button onclick="deleteTodo(${todo})">X</button></td>
-                </tr>
-            `
+            $("#table-body").append(`
+            <tr>
+                <td>${todoList[todo].title}</td>
+                <td>${todoList[todo].description}</td>
+                <td>${todoList[todo].place}</td>
+                <td>${todoList[todo].dueDate}</td>
+                <td><button type="button" class="btn btn-danger" onclick="deleteTodo(${todo})">X</button></td>
+            </tr>
+        `);
         }
     }
 }
@@ -75,20 +72,14 @@ let deleteTodo = function (index) {
 }
 
 let addTodo = function () {
-    let inputTitle = document.getElementById("inputTitle");
-    let inputDescription = document.getElementById("inputDescription");
-    let inputPlace = document.getElementById("inputPlace");
-    let inputDate = document.getElementById("inputDate");
-    let newTitle = inputTitle.value;
-    let newDescription = inputDescription.value;
-    let newPlace = inputPlace.value;
-    let newDate = new Date(inputDate.value);
+
     let newTodo = {
-        title: newTitle,
-        description: newDescription,
-        place: newPlace,
-        dueDate: newDate
+        title: $("#inputTitle").val(),
+        description: $("#inputDescription").val(),
+        place: $("#inputPlace").val(),
+        dueDate: new Date($("#inputDate").val())
     };
+
     todoList.push(newTodo);
     updateJSONbin();
 }
