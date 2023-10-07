@@ -41,11 +41,47 @@ $.ajax({
     }
 });
 
+function compareDates(date1, date2) {
+    let timestamp1 = date1.getTime();
+    let timestamp2 = date2.getTime();
+
+    if (timestamp1 < timestamp2) {
+        return true;
+    } else if (timestamp1 >= timestamp2) {
+        return false;
+    }
+}
+
+function dateFilteredList() {
+    let newTodoList = [];
+    let startDate = new Date($("#startDate").val());
+    let endDate = new Date($("#endDate").val());
+    for (let todo in todoList) {
+        if (compareDates(new Date(todoList[todo].dueDate), startDate)) continue;
+        else if (compareDates(new Date(todoList[todo].dueDate), endDate)) continue;
+        newTodoList.push(todoList[todo]);
+    }
+    return newTodoList;
+}
+
+function aaa() {
+    console.log(new Date(todoList[0].dueDate));
+    console.log(new Date(todoList[1].dueDate));
+    console.log(new Date(todoList[2].dueDate));
+    console.log(new Date($("#startDate").val()));
+    console.log(new Date($("#endDate").val()));
+}
+
+setTimeout(aaa, 10000);
+
 let updateTodoList = function () {
     $("#table-body").empty();
 
     let filterInput = $("#inputSearch").val();
-    for (let todo in todoList) {
+    let newTodoList = dateFilteredList();
+
+    for (let todo in newTodoList) {
+
         if (
             (filterInput == "") ||
             (todoList[todo].title.includes(filterInput)) ||
@@ -56,7 +92,7 @@ let updateTodoList = function () {
                 <td>${todoList[todo].title}</td>
                 <td>${todoList[todo].description}</td>
                 <td>${todoList[todo].place}</td>
-                <td>${todoList[todo].dueDate}</td>
+                <td>${new Date(todoList[todo].dueDate).toLocaleDateString()}</td>
                 <td><button type="button" class="btn btn-danger" onclick="deleteTodo(${todo})">X</button></td>
             </tr>
         `);
