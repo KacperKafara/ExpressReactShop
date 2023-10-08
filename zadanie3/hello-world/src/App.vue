@@ -1,15 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <SearchComponent />
+  <MoviesTable />
+  <ListByGenre />
+  <ListByCast />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SearchComponent from './components/SearchComponent.vue'
+import MoviesTable from './components/MoviesTable.vue'
+import ListByGenre from './components/ListByGenre.vue'
+import ListByCast from './components/ListByCast.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    SearchComponent,
+    MoviesTable,
+    ListByGenre,
+    ListByCast
   }
 }
 </script>
