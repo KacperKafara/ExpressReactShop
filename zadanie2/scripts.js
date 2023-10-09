@@ -70,6 +70,7 @@ let updateTodoList = function () {
             (newTodoList[todo].title.includes(filterInput)) ||
             (newTodoList[todo].description.includes(filterInput))
         ) {
+            //TODO: zamien to na pojedyncze tworzenie elementow DOM i eventListener do batona ok?
             $("#table-body").append(`
             <tr>
                 <td>${newTodoList[todo].title}</td>
