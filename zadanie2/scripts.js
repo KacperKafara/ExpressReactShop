@@ -66,14 +66,14 @@ let updateTodoList = function () {
     let newTodoList = dateFilteredList();
 
     for (let todo in newTodoList) {
-        // for (var todo = 0; todo < newTodoList.length; todo++) {
+
         if (
             (filterInput == "") ||
             (newTodoList[todo].title.includes(filterInput)) ||
             (newTodoList[todo].description.includes(filterInput))
         ) {
 
-            //TODO: zamien to na pojedyncze tworzenie elementow DOM i eventListener do batona ok?
+
 
             let title = document.createElement("td");
             title.innerText = newTodoList[todo].title;
@@ -86,11 +86,12 @@ let updateTodoList = function () {
             let btnCell = document.createElement("td");
             let btn = document.createElement("button");
             btn.classList.add("btn", "btn-danger");
+            btn.value = "X";
+            btn.type = "button";
             btn.addEventListener("click", () => {
                 deleteTodo(todo);
             })
-            btn.innerText = "X";
-            btn.setAttribute("type", "button")
+
             btnCell.appendChild(btn);
             let row = document.createElement("tr");
             row.append(title, description, place, dueDate, btnCell);
@@ -106,7 +107,7 @@ let updateTodoList = function () {
             //     </tr>
             // `);
         }
-        // }
+
     }
 }
 
