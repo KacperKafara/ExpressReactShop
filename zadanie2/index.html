@@ -12,10 +12,10 @@
     <title>MyTODO App</title>
 </head>
 
-<body>
-    <h1 class="text-center">MyNotes</h1>
-    <div id="todoListView">
-        <table class="table table-bordered text-center">
+<body class="bg-light">
+    <h1 class="text-center mt-3">MyNotes</h1>
+    <div id="todoListView" class="d-flex justify-content-center">
+        <table class="table table-bordered text-center mx-5 my-5">
             <thead class="table-dark">
                 <tr>
                     <th scope="col">Title</th>
@@ -30,20 +30,26 @@
             </tbody>
         </table>
     </div>
-    <div class="container">
-        <form class="justify-content-center">
+    <div class="container ">
+        <form class="justify-content-center  ">
+            <h4 class="text-center font-weight-bold">Filters</h4>
             <div class="form-group">
-                <label class="form-label">Search</label>
+                <label class="form-label" for="inputSearch">Search</label>
                 <input type="text" class="form-control" id="inputSearch" placeholder="Type Your search here...">
-                <label class="form-label">Start date</label>
-                <input type="date" class="form-control" id="startDate">
-                <label class="form-label">End date</label>
-                <input type="date" class="form-control" id="endDate">
-            </div><br>
-            <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label class="form-label" for="startDate">Start date</label>
+                    <input type="date" class="form-control" id="startDate">
+                </div>
+                <div class="form-group col">
+                    <label class="form-label" for="endDate">End date</label>
+                    <input type="date" class="form-control" id="endDate">
+                </div>
+            </div>
         </form>
-        <hr>
-        <form class="align-items-center" id="addForm">
+        <form class="align-items-center my-5" id="addForm">
+            <h4 class="text-center font-weight-bold">Add new Todo</h4>
             <div class="form-group">
                 <label for="inputTitle" class="form-label">Title</label>
                 <input type="text" id="inputTitle" class="form-control">
@@ -59,8 +65,8 @@
             <div class="form-group">
                 <label for="inputDate" class="form-label">Due date</label>
                 <input type="date" id="inputDate" class="form-control">
-            </div><br>
-            <button type="button" class="btn btn-success" onclick="addTodo()">Add</button>
+            </div>
+            <button type="button" class="btn btn-success mt-3" onclick="addTodo()">Add</button>
         </form>
     </div>
 

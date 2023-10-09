@@ -86,7 +86,7 @@ let updateTodoList = function () {
             let btnCell = document.createElement("td");
             let btn = document.createElement("button");
             btn.classList.add("btn", "btn-danger");
-            btn.value = "X";
+            btn.innerText = "X";
             btn.type = "button";
             btn.addEventListener("click", () => {
                 deleteTodo(todo);
