@@ -22,7 +22,6 @@ let initList = function () {
     }
 }
 
-//initList();
 
 const BASE_URL = "https://api.jsonbin.io/v3/b/651f1cba0574da7622b4e984";
 const SECRET_KEY = "$2a$10$2InDCfc1/HvrK1asONakfO.KX90QO2Pwxx9nPm/PSdnWOqCO1ixfe";
@@ -40,6 +39,9 @@ $.ajax({
         console.log(err.responseJSON);
     }
 });
+
+
+// initList();
 
 
 function dateFilteredList() {
@@ -70,16 +72,39 @@ let updateTodoList = function () {
             (newTodoList[todo].title.includes(filterInput)) ||
             (newTodoList[todo].description.includes(filterInput))
         ) {
+
             //TODO: zamien to na pojedyncze tworzenie elementow DOM i eventListener do batona ok?
-            $("#table-body").append(`
-            <tr>
-                <td>${newTodoList[todo].title}</td>
-                <td>${newTodoList[todo].description}</td>
-                <td>${newTodoList[todo].place}</td>
-                <td>${new Date(newTodoList[todo].dueDate).toLocaleDateString()}</td>
-                <td><button type="button" class="btn btn-danger" onclick="deleteTodo(${todo})">X</button></td>
-            </tr>
-        `);
+
+            let title = document.createElement("td");
+            title.innerText = newTodoList[todo].title;
+            let description = document.createElement("td");
+            description.innerText = newTodoList[todo].description;
+            let place = document.createElement("td");
+            place.innerText = newTodoList[todo].place;
+            let dueDate = document.createElement("td");
+            dueDate.innerText = new Date(newTodoList[todo].dueDate).toLocaleDateString();
+            let btnCell = document.createElement("td");
+            let btn = document.createElement("button");
+            btn.classList.add("btn", "btn-danger");
+            btn.addEventListener("click", () => {
+                deleteTodo(todo);
+            })
+            btn.innerText = "X";
+            btn.setAttribute("type", "button")
+            btnCell.appendChild(btn);
+            let row = document.createElement("tr");
+            row.append(title, description, place, dueDate, btnCell);
+            $("#table-body").append(row);
+
+            //     $("#table-body").append(`
+            //     <tr>
+            //         <td>${newTodoList[todo].title}</td>
+            //         <td>${newTodoList[todo].description}</td>
+            //         <td>${newTodoList[todo].place}</td>
+            //         <td>${new Date(newTodoList[todo].dueDate).toLocaleDateString()}</td>
+            //         <td><button type="button" class="btn btn-danger" onclick="deleteTodo(${todo})">X</button></td>
+            //     </tr>
+            // `);
         }
         // }
     }
@@ -93,7 +118,6 @@ let deleteTodo = function (index) {
 }
 
 let addTodo = function () {
-
     let newTodo = {
         title: $("#inputTitle").val(),
         description: $("#inputDescription").val(),
@@ -103,6 +127,7 @@ let addTodo = function () {
 
     todoList.push(newTodo);
     updateJSONbin();
+    $("#addForm").get(0).reset();
 }
 
 let updateJSONbin = function () {
