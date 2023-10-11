@@ -34,6 +34,7 @@ $.ajax({
     success: (data) => {
         console.log(data.record);
         todoList = data.record;
+        updateTodoList();
     },
     error: (err) => {
         console.log(err.responseJSON);
@@ -101,11 +102,14 @@ let updateTodoList = function () {
     }
 }
 
-setInterval(updateTodoList, 1000);
+// setInterval(updateTodoList, 1000);
+
+$("#searchBtn").on("click", () => updateTodoList());
 
 let deleteTodo = function (index) {
     todoList.splice(index, 1);
     updateJSONbin();
+    updateTodoList();
 }
 
 let addTodo = function () {
@@ -117,6 +121,7 @@ let addTodo = function () {
     };
 
     todoList.push(newTodo);
+    updateTodoList();
     updateJSONbin();
     $("#addForm").get(0).reset();
 }
