@@ -34,6 +34,7 @@ $.ajax({
     success: (data) => {
         console.log(data.record);
         todoList = data.record;
+        // initList();
         updateTodoList();
     },
     error: (err) => {
@@ -42,7 +43,7 @@ $.ajax({
 });
 
 
-// initList();
+
 
 
 function dateFilteredList() {
@@ -63,15 +64,15 @@ function dateFilteredList() {
 let updateTodoList = function () {
     $("#table-body").empty();
 
-    let filterInput = $("#inputSearch").val();
+    let filterInput = $("#inputSearch").val().toLowerCase();
     let newTodoList = dateFilteredList();
 
     for (let todo in newTodoList) {
 
         if (
             (filterInput == "") ||
-            (newTodoList[todo].title.includes(filterInput)) ||
-            (newTodoList[todo].description.includes(filterInput))
+            (newTodoList[todo].title.toLowerCase().includes(filterInput)) ||
+            (newTodoList[todo].description.toLowerCase().includes(filterInput))
         ) {
 
 
