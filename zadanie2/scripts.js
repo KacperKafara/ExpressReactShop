@@ -96,16 +96,6 @@ let updateTodoList = function () {
             let row = document.createElement("tr");
             row.append(title, description, place, dueDate, btnCell);
             $("#table-body").append(row);
-
-            //     $("#table-body").append(`
-            //     <tr>
-            //         <td>${newTodoList[todo].title}</td>
-            //         <td>${newTodoList[todo].description}</td>
-            //         <td>${newTodoList[todo].place}</td>
-            //         <td>${new Date(newTodoList[todo].dueDate).toLocaleDateString()}</td>
-            //         <td><button type="button" class="btn btn-danger" onclick="deleteTodo(${todo})">X</button></td>
-            //     </tr>
-            // `);
         }
 
     }
