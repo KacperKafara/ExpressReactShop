@@ -3,8 +3,8 @@
         <h1>Baza filmów</h1>
         <form>
             <label for="title" class="form-label">Tytuł</label>
-            <input type="text" class="form-control" name="title" id="title"
-                placeholder="Podaj tytuł lub fragment tytułu filmu">
+            <input type="text" class="form-control" name="title" id="title" v-model="title"
+                @input="$emit('title-response', title)" placeholder="Podaj tytuł lub fragment tytułu filmu">
             <div class="row">
                 <div class="col"><label for="startYear" class="form-label">Rok produkcji od:</label></div>
                 <div class="col-md-7"><input type="text" class="form-control" name="startYear" id="startYear"
@@ -17,18 +17,29 @@
             </div>
             <label for="cast" class="form-label">Obsada</label>
             <input type="text" class="form-control" name="cast" id="cast" placeholder="Imię i nazwisko">
-            <button @click="blockRefresh" class="btn btn-primary w-100">Szukaj</button>
+            <button @click.prevent="blockRefresh" class="btn btn-primary w-100">Szukaj</button>
         </form>
+
+
     </div>
 </template>
 
 <script>
+
+import { ref } from "vue"
 export default {
+
     methods: {
-        blockRefresh(e) {
-            e.preventDefault();
+        blockRefresh() {
+
+        }
+    },
+    data() {
+        return {
+            title: ref(''),
         }
     }
+
 }
 </script>
 
