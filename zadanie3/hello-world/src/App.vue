@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       displayArr: ref(lodash.sampleSize(json, 10)),
-      arr: [lodash.sampleSize(json, 100)],
+      arr: lodash.sampleSize(json, 100),
       randomArray: lodash.sampleSize(json, 100),
     }
   },
