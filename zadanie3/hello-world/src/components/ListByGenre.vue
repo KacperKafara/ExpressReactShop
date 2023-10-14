@@ -2,13 +2,12 @@
     <div class="container mt-5">
         <h1>Filmy według gatunku</h1>
         <!-- <ul v-for="[key, value] of Object.entries(moviesByGenres())" :key="key"> -->
-        <ul v-for="(value, key) in moviesByGenres()" :key="key">
+        <ul v-for="(value, key) in sortedMovies" :key="key">
             <h4>{{ key }}</h4>
             <ol>
                 <li v-for="(movie, index) of value" :key="index"> {{ movie.title }} </li>
             </ol>
         </ul>
-        <p> All: {{ allGenres }}</p>
     </div>
 </template>
 
@@ -23,12 +22,14 @@ export default {
     },
     methods: {
         moviesByGenres() {
+            let startTime = new Date();
+            let allGenres = [];
             this.array.forEach((element) => {
                 // let unique = lodash.filter(element.genres, (item) => {
                 //     return this.allGenres.indexOf(item) === -1
                 // });
-                let unique = lodash.difference(element.genres, this.allGenres);
-                this.allGenres = lodash.concat(this.allGenres, unique);
+                let unique = lodash.difference(element.genres, allGenres);
+                allGenres = lodash.concat(allGenres, unique);
             })
             let sortedGenres = {};
             // this.allGenres.forEach(genre => {
@@ -36,7 +37,8 @@ export default {
             //         return element.genres.includes(genre);
             //     })
             // })
-            lodash.forEach(this.allGenres, (genre => {
+
+            lodash.forEach(allGenres, (genre => {
                 sortedGenres[genre] = [];
             }))
             lodash.forEach(this.array, element => {
@@ -47,14 +49,20 @@ export default {
                 }
 
             })
+            let endTime = new Date();
+            console.log("genre time: " + (endTime - startTime));
             // console.log(sortedGenres)
             return sortedGenres;
         }
     },
     data() {
         return {
-            allGenres: ref([]),
+
+            sortedMovies: ref([]),
         }
+    },
+    mounted() {
+        this.sortedMovies = this.moviesByGenres();
     }
 
 }

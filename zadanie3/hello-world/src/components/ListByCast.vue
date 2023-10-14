@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <h1>Filmy według obsady</h1>
         <!-- <ul v-for="[key, value] of Object.entries(moviesByGenres())" :key="key"> -->
-        <ul v-for="(value, key) in moviesByActors()" :key="key">
+        <ul v-for="(value, key) in sortedMovies" :key="key">
             <h4>{{ key }}</h4>
             <ol>
                 <li v-for="(movie, index) of value" :key="index"> {{ movie.title }} </li>
@@ -23,16 +23,18 @@ export default {
     },
     methods: {
         moviesByActors() {
+            let startTime = new Date();
+            let allActors = [];
             // this.allActors = lodash.uniqBy(this.array, (e) => e.cast)
             lodash.forEach(this.array, ((element) => {
                 // let unique = lodash.filter(element.cast, (item) => {
                 //     return this.allActors.indexOf(item) === -1
                 // });
-                let unique = lodash.difference(element.cast, this.allActors);
-                this.allActors = lodash.concat(this.allActors, unique);
+                let unique = lodash.difference(element.cast, allActors);
+                allActors = lodash.concat(allActors, unique);
             }))
             let sortedActors = {};
-            lodash.forEach(this.allActors, (actor => {
+            lodash.forEach(allActors, (actor => {
                 sortedActors[actor] = [];
             }))
             lodash.forEach(this.array, element => {
@@ -48,13 +50,18 @@ export default {
             //     })
             // }))
             // console.log(sortedActors)
+            let endTime = new Date();
+            console.log("cast time: " + (endTime - startTime));
             return sortedActors;
         }
     },
     data() {
         return {
-            allActors: ref([]),
+            sortedMovies: ref([]),
         }
+    },
+    mounted() {
+        this.sortedMovies = this.moviesByActors();
     }
 
 }
