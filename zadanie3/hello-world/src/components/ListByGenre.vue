@@ -31,10 +31,21 @@ export default {
                 this.allGenres = lodash.concat(this.allGenres, unique);
             })
             let sortedGenres = {};
-            this.allGenres.forEach(genre => {
-                sortedGenres[genre] = lodash.filter(this.array, (element) => {
-                    return element.genres.includes(genre);
-                })
+            // this.allGenres.forEach(genre => {
+            //     sortedGenres[genre] = lodash.filter(this.array, (element) => {
+            //         return element.genres.includes(genre);
+            //     })
+            // })
+            lodash.forEach(this.allGenres, (genre => {
+                sortedGenres[genre] = [];
+            }))
+            lodash.forEach(this.array, element => {
+                if (element.genres != '') {
+                    lodash.forEach(element.genres, genre => {
+                        sortedGenres[genre].push(element);
+                    })
+                }
+
             })
             // console.log(sortedGenres)
             return sortedGenres;
