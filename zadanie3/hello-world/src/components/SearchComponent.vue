@@ -8,16 +8,17 @@
             <div class="row">
                 <div class="col"><label for="startYear" class="form-label">Rok produkcji od:</label></div>
                 <div class="col-md-7"><input type="text" class="form-control" name="startYear" id="startYear"
-                        placeholder="Liczba naturalna z przedziału 1900-2019"></div>
+                        v-model="yearStart" placeholder="Liczba naturalna z przedziału 1900-2019"></div>
             </div>
             <div class="row">
                 <div class="col"><label for="endYear" class="form-label">Rok produkcji do:</label></div>
-                <div class="col-md-7"><input type="text" class="form-control" name="endYear" id="endYear"
+                <div class="col-md-7"><input type="text" class="form-control" name="endYear" id="endYear" v-model="yearEnd"
                         placeholder="Liczba naturalna z przedziału 1900-2019"></div>
             </div>
             <label for="cast" class="form-label">Obsada</label>
-            <input type="text" class="form-control" name="cast" id="cast" placeholder="Imię i nazwisko">
-            <button @click.prevent="blockRefresh" class="btn btn-primary w-100">Szukaj</button>
+            <input type="text" class="form-control" name="cast" id="cast" placeholder="Imię i nazwisko" v-model="cast">
+            <button @click.prevent="$emit('searchFilter', { title, yearStart, yearEnd, cast })"
+                class="btn btn-primary w-100">Szukaj</button>
         </form>
 
 
@@ -37,6 +38,10 @@ export default {
     data() {
         return {
             title: ref(''),
+            yearStart: ref(1900),
+            yearEnd: ref(2024),
+            cast: ref(''),
+
         }
     }
 

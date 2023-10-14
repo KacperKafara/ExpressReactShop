@@ -1,6 +1,6 @@
 <template>
-  <SearchComponent @title-response="(e) => title = e" />
-  <MoviesTable :array="arr" @display-more="(len) => { if (len < 100) { displayMoreMovies() } }" />
+  <SearchComponent @title-response="(e) => title = e" @searchFilter="(filters) => filterMovies(filters)" />
+  <MoviesTable :array="displayArr" @display-more="(len) => { if (len < arr.length) { displayMoreMovies() } }" />
   <ListByGenre />
   <ListByCast />
   <h1>{{ title }}</h1>
@@ -26,17 +26,33 @@ export default {
   },
   data() {
     return {
-      arr: ref(lodash.sampleSize(json, 10)),
+      displayArr: ref(lodash.sampleSize(json, 10)),
+      arr: [lodash.sampleSize(json, 100)],
       title: ref('title'),
     }
   },
   methods: {
     displayMoreMovies() {
-      let newArray = lodash.concat(this.arr, lodash.sampleSize(json, 10));
-      while (lodash.uniq(newArray).length % 10 != 0) {
-        newArray = lodash.concat(newArray, lodash.sampleSize(json, lodash.uniq(newArray) % 10));
+      let remaining = this.arr.length - this.displayArr.length >= 10 ? 10 : this.arr.length - this.displayArr.length
+      let newArray = lodash.concat(this.displayArr, lodash.slice(this.arr, this.displayArr.length, this.displayArr.length + remaining));
+      this.displayArr = newArray;
+    },
+    filterMovies(filters) {
+      this.arr = lodash.filter(json, (value) => {
+        return value.title.toLowerCase().includes(filters.title.toLowerCase()) &&
+          (filters.yearStart <= value.year && filters.yearEnd >= value.year) &&
+          this.listContainsCaseInsensitive(value.cast, filters.cast);
+      })
+      lodash.remove(this.displayArr, true);
+      this.displayArr = lodash.slice(this.arr, 0, this.arr.length >= 10 ? 10 : this.arr.length);
+    },
+    listContainsCaseInsensitive(list, value) {
+      if (value === '') {
+        return true;
       }
-      this.arr = newArray;
+      return lodash.some(list, (element) => {
+        return element.toLowerCase().includes(value.toLowerCase());
+      })
     }
   }
 
