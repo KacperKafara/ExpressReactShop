@@ -2,7 +2,7 @@
   <SearchComponent @searchFilter="(filters) => filterMovies(filters)" />
   <MoviesTable :array="displayArr" @display-more="(len) => { if (len < arr.length) { displayMoreMovies() } }" />
   <ListByGenre :array="randomArray" />
-  <ListByCast />
+  <ListByCast :array="randomArray" />
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
     return {
       displayArr: ref(lodash.sampleSize(json, 10)),
       arr: [lodash.sampleSize(json, 100)],
-      randomArray: lodash.sampleSize(json, 5),
+      randomArray: lodash.sampleSize(json, 100),
     }
   },
   methods: {

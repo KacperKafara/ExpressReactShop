@@ -24,10 +24,10 @@ export default {
     methods: {
         moviesByGenres() {
             this.array.forEach((element) => {
-                let unique = lodash.filter(element.genres, (item) => {
-                    console.log(item);
-                    return this.allGenres.indexOf(item) === -1
-                });
+                // let unique = lodash.filter(element.genres, (item) => {
+                //     return this.allGenres.indexOf(item) === -1
+                // });
+                let unique = lodash.difference(element.genres, this.allGenres);
                 this.allGenres = lodash.concat(this.allGenres, unique);
             })
             let sortedGenres = {};
@@ -36,7 +36,7 @@ export default {
                     return element.genres.includes(genre);
                 })
             })
-            console.log(sortedGenres)
+            // console.log(sortedGenres)
             return sortedGenres;
         }
     },
