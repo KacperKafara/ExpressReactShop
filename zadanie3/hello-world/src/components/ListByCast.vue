@@ -8,7 +8,6 @@
                 <li v-for="(movie, index) of value" :key="index"> {{ movie.title }} </li>
             </ol>
         </ul>
-        <!-- <p> All: {{ allActors }}</p> -->
     </div>
 </template>
 
@@ -23,13 +22,8 @@ export default {
     },
     methods: {
         moviesByActors() {
-            let startTime = new Date();
             let allActors = [];
-            // this.allActors = lodash.uniqBy(this.array, (e) => e.cast)
             lodash.forEach(this.array, ((element) => {
-                // let unique = lodash.filter(element.cast, (item) => {
-                //     return this.allActors.indexOf(item) === -1
-                // });
                 let unique = lodash.difference(element.cast, allActors);
                 allActors = lodash.concat(allActors, unique);
             }))
@@ -44,14 +38,6 @@ export default {
                     })
                 }
             })
-            // lodash.forEach(this.allActors, (actor => {
-            //     sortedActors[actor] = lodash.filter(this.array, (element) => {
-            //         return lodash.includes(element.cast, actor);
-            //     })
-            // }))
-            // console.log(sortedActors)
-            let endTime = new Date();
-            console.log("cast time: " + (endTime - startTime));
             return sortedActors;
         }
     },

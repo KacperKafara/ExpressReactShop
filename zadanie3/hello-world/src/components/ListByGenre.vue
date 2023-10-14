@@ -22,22 +22,12 @@ export default {
     },
     methods: {
         moviesByGenres() {
-            let startTime = new Date();
             let allGenres = [];
             this.array.forEach((element) => {
-                // let unique = lodash.filter(element.genres, (item) => {
-                //     return this.allGenres.indexOf(item) === -1
-                // });
                 let unique = lodash.difference(element.genres, allGenres);
                 allGenres = lodash.concat(allGenres, unique);
             })
             let sortedGenres = {};
-            // this.allGenres.forEach(genre => {
-            //     sortedGenres[genre] = lodash.filter(this.array, (element) => {
-            //         return element.genres.includes(genre);
-            //     })
-            // })
-
             lodash.forEach(allGenres, (genre => {
                 sortedGenres[genre] = [];
             }))
@@ -49,9 +39,6 @@ export default {
                 }
 
             })
-            let endTime = new Date();
-            console.log("genre time: " + (endTime - startTime));
-            // console.log(sortedGenres)
             return sortedGenres;
         }
     },
