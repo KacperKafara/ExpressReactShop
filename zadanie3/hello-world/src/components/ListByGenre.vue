@@ -1,9 +1,52 @@
 <template>
-    <h1>ccc</h1>
+    <div class="container mt-5">
+        <h1>Filmy według gatunku</h1>
+        <!-- <ul v-for="[key, value] of Object.entries(moviesByGenres())" :key="key"> -->
+        <ul v-for="(value, key) in moviesByGenres()" :key="key">
+            <h4>{{ key }}</h4>
+            <ol>
+                <li v-for="(movie, index) of value" :key="index"> {{ movie.title }} </li>
+            </ol>
+        </ul>
+        <p> All: {{ allGenres }}</p>
+    </div>
 </template>
 
 <script>
+import lodash from 'lodash'
+import { ref } from 'vue';
 
+export default {
+    props: {
+        array: Array,
+
+    },
+    methods: {
+        moviesByGenres() {
+            this.array.forEach((element) => {
+                let unique = lodash.filter(element.genres, (item) => {
+                    console.log(item);
+                    return this.allGenres.indexOf(item) === -1
+                });
+                this.allGenres = lodash.concat(this.allGenres, unique);
+            })
+            let sortedGenres = {};
+            this.allGenres.forEach(genre => {
+                sortedGenres[genre] = lodash.filter(this.array, (element) => {
+                    return element.genres.includes(genre);
+                })
+            })
+            console.log(sortedGenres)
+            return sortedGenres;
+        }
+    },
+    data() {
+        return {
+            allGenres: ref([]),
+        }
+    }
+
+}
 </script>
 
 <style>

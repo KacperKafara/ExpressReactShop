@@ -1,9 +1,8 @@
 <template>
-  <SearchComponent @title-response="(e) => title = e" @searchFilter="(filters) => filterMovies(filters)" />
+  <SearchComponent @searchFilter="(filters) => filterMovies(filters)" />
   <MoviesTable :array="displayArr" @display-more="(len) => { if (len < arr.length) { displayMoreMovies() } }" />
-  <ListByGenre />
+  <ListByGenre :array="randomArray" />
   <ListByCast />
-  <h1>{{ title }}</h1>
 </template>
 
 <script>
@@ -28,7 +27,7 @@ export default {
     return {
       displayArr: ref(lodash.sampleSize(json, 10)),
       arr: [lodash.sampleSize(json, 100)],
-      title: ref('title'),
+      randomArray: lodash.sampleSize(json, 5),
     }
   },
   methods: {

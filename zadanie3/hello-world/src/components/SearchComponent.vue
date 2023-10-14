@@ -4,7 +4,7 @@
         <form>
             <label for="title" class="form-label">Tytuł</label>
             <input type="text" class="form-control" name="title" id="title" v-model="title"
-                @input="$emit('title-response', title)" placeholder="Podaj tytuł lub fragment tytułu filmu">
+                placeholder="Podaj tytuł lub fragment tytułu filmu">
             <div class="row">
                 <div class="col"><label for="startYear" class="form-label">Rok produkcji od:</label></div>
                 <div class="col-md-7"><input type="text" class="form-control" name="startYear" id="startYear"
