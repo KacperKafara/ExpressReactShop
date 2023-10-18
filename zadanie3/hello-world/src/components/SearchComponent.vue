@@ -37,6 +37,7 @@ export default {
     },
     data() {
         return {
+
             title: ref(''),
             yearStart: ref(1900),
             yearEnd: ref(2024),
