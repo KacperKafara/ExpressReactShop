@@ -1,6 +1,7 @@
 <template>
   <SearchComponent @searchFilter="(filters) => filterMovies(filters)" />
-  <MoviesTable :array="displayArr" @display-more="(len) => { if (len < arr.length) { displayMoreMovies() } }" />
+  <MoviesTable :array="displayArr" :arrLen="arr.length"
+    @display-more="(len) => { if (len < arr.length) { displayMoreMovies() } }" />
   <ListByGenre :array="randomArray" />
   <ListByCast :array="randomArray" />
 </template>

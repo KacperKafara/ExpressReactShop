@@ -27,7 +27,7 @@
                 </tr>
             </tbody>
         </table>
-        <button @click="$emit('display-more', array.length)">Dsiplay more ({{ array.length }})</button>
+        <button @click="$emit('display-more', array.length)">Dsiplay more ({{ array.length }}/ {{ arrLen }})</button>
     </div>
 </template>
 
@@ -35,6 +35,7 @@
 export default {
     props: {
         array: Array,
+        arrLen: Number,
     },
 }
 </script>
