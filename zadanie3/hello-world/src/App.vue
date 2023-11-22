@@ -40,7 +40,7 @@ export default {
     filterMovies(filters) {
       this.arr = lodash.filter(json, (value) => {
         return value.title.toLowerCase().includes(filters.title.toLowerCase()) &&
-          (filters.yearStart <= value.year && filters.yearEnd >= value.year) &&
+          (filters.yearStart <= value.year && (filters.yearEnd >= value.year || filters.yearEnd == 0)) &&
           this.listContainsCaseInsensitive(value.cast, filters.cast);
       })
       lodash.remove(this.displayArr, true);
