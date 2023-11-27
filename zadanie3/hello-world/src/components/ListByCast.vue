@@ -38,7 +38,16 @@ export default {
                     })
                 }
             })
-            return sortedActors;
+            lodash.forEach(sortedActors, (movies, actor) => {
+                sortedActors[actor] = lodash.sortBy(movies, 'title');
+            });
+            const sortedActorsArray = lodash.sortBy(Object.keys(sortedActors));
+            const sortedActorsObject = {};
+            sortedActorsArray.forEach((actor) => {
+                sortedActorsObject[actor] = sortedActors[actor];
+            });
+
+            return sortedActorsObject;
         }
     },
     data() {

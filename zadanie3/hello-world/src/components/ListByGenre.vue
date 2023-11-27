@@ -37,9 +37,19 @@ export default {
                         sortedGenres[genre].push(element);
                     })
                 }
-
             })
-            return sortedGenres;
+            lodash.forEach(sortedGenres, (movies, genre) => {
+                sortedGenres[genre] = lodash.sortBy(movies, 'title');
+            });
+
+            const sortedGenresArray = lodash.sortBy(Object.keys(sortedGenres));
+
+            const sortedGenresObject = {};
+            sortedGenresArray.forEach((genre) => {
+                sortedGenresObject[genre] = sortedGenres[genre];
+            });
+
+            return sortedGenresObject;
         }
     },
     data() {
