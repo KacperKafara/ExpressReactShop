@@ -18,11 +18,20 @@ const orderSchema = new Schema({
     email: {
         type: String,
         required: true,
+        validate: {
+            validator: v => {
+                return /^\S+@\S+\.\S+$/.test(v);
+            }
+        }
     },
     phoneNumber: {
         type: String,
         required: true,
-
+        validate: {
+            validator: v => {
+                return /^\d{9}$/.test(v);
+            }
+        },
     },
     orders: [
         {
@@ -33,6 +42,11 @@ const orderSchema = new Schema({
             quantity: {
                 type: Number,
                 required: true,
+                validate: {
+                    validator: v => {
+                        return Number.isInteger(v) && v >= 1;
+                    }
+                }
             }
         }
     ]

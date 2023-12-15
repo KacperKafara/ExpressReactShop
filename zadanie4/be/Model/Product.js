@@ -10,11 +10,16 @@ const productSchema = new Schema({
             validator: v => {
                 return /\S/.test(v);
             }
-        }
+        },
     },
     description: {
         type: String,
         required: true,
+        validate: {
+            validator: v => {
+                return /\S/.test(v);
+            }
+        },
     },
     price: {
         type: Number,
