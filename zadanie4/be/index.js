@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import statusController from './controllers/statusController.js';
 import categoryController from './controllers/categoryController.js';
+import productController from './controllers/productController.js';
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,6 +15,7 @@ const PORT = 3000;
 
 app.use('/status', statusController);
 app.use('/categories', categoryController);
+app.use('/products', productController);
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
