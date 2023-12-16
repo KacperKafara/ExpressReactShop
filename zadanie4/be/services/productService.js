@@ -1,11 +1,22 @@
 import ProductRepo from '../Model/Product.js';
 import CategoryRepo from '../Model/Category.js';
+import lodash from 'lodash';
 import {
     ReasonPhrases,
     StatusCodes,
     getReasonPhrase,
     getStatusCode,
 } from 'http-status-codes';
+
+function handleError(error) {
+    if (error.name == 'ValidationError') {
+        const validationErrors = Object.values(error.errors).map((validationError) => validationError.message);
+        return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Validation error.', errors: validationErrors });
+    } else if (error.name == 'CastError') {
+        return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Given ID is not type of ObjectID.' })
+    };
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+}
 
 
 export const getAllProducts = async (req, res) => {
@@ -28,8 +39,7 @@ export const getProductById = async (req, res) => {
             return res.status(StatusCodes.NO_CONTENT).json(null);
         }
     } catch (error) {
-        if (error.name == 'CastError') return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Given ID is not type of ObjectID.' });
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+        handleError(error);
     }
 }
 
@@ -42,7 +52,7 @@ export const addProduct = async (req, res) => {
         const { name, description, price, weight, categoryId } = req.body;
         const category = await CategoryRepo.findById(categoryId);
         if (!category) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Category with given id does not exists.' });
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Category with given id does not exists.' });
         }
         const product = await ProductRepo.create({
             name: name,
@@ -54,12 +64,34 @@ export const addProduct = async (req, res) => {
         return res.status(StatusCodes.CREATED).json(product);
 
     } catch (error) {
-        if (error.name == 'ValidationError') {
-            const validationErrors = Object.values(error.errors).map((validationError) => validationError.message);
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Validation error.', errors: validationErrors });
-        } else if (error.name == 'CastError') {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Given ID is not type of ObjectID.' })
-        };
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+        handleError(error);
+    }
+}
+
+export const updateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const product = await ProductRepo.findById(productId);
+
+        if (!product) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Product with given ID does not exists.' });
+        }
+
+        const updateData = req.body;
+
+        if (updateData.categoryId) {
+            const category = await CategoryRepo.findById(updateData.categoryId);
+            if (!category) {
+                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Category with given ID does not exist.' });
+            }
+
+            product.category = category;
+        }
+
+        lodash.merge(product, updateData);
+        const updatedProduct = await product.save();
+        return res.status(StatusCodes.OK).json(updatedProduct);
+    } catch (error) {
+        handleError(error);
     }
 }
