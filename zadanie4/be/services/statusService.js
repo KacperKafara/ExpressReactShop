@@ -1,10 +1,17 @@
-const OrderStatus = require('../Model/OrderStatus');
+import OrderStatusRepo from '../Model/OrderStatus.js';
+import {
+    ReasonPhrases,
+    StatusCodes,
+    getReasonPhrase,
+    getStatusCode,
+} from 'http-status-codes';
 
-exports.getAllStatuses = async (req, res) => {
+export const getAllStatus = async (req, res) => {
     try {
-        const status = await OrderStatus.find();
-        res.json(status);
+        const status = await OrderStatusRepo.find();
+        if (status.length == 0) res.status(StatusCodes.NO_CONTENT).json(categories);
+        else res.json(status);
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
     }
 }

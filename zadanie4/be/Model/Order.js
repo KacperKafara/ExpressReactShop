@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const OrderStatus = require('./OrderStatus');
-const Product = require('./Product')
+import mongoose from 'mongoose';
+import OrderStatus from './OrderStatus';
+import Product from './Product';
+
+const { Schema } = mongoose;
 
 const orderSchema = new Schema({
     approvalDate: {
@@ -50,6 +51,8 @@ const orderSchema = new Schema({
             }
         }
     ]
-})
+});
 
-module.exports = mongoose.model('Order', orderSchema);
+const Order = mongoose.model('Order', orderSchema);
+
+export default Order;

@@ -1,8 +1,8 @@
-const express = require('express');
-const statusService = require('../services/statusService');
+import express from 'express';
+import { getAllStatus } from '../services/statusService.js';
 
 const router = express.Router();
 
-router.get('/', statusService.getAllStatuses);
+router.get('/', getAllStatus);
 
-module.exports = router
+export default router;

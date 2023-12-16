@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
 
 const orderStatusSchema = new Schema({
     name: {
@@ -7,6 +8,8 @@ const orderStatusSchema = new Schema({
         required: true,
         enum: ['PENDING', 'APPROVED', 'CANCELLED', 'COMPLETED'],
     }
-})
+});
 
-module.exports = mongoose.model('OrderStatus', orderStatusSchema);
+const OrderStatus = mongoose.model('OrderStatus', orderStatusSchema);
+
+export default OrderStatus;

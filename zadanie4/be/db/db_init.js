@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const Category = require('../Model/Category');
-const OrderStatus = require('../Model/OrderStatus');
+import mongoose from 'mongoose';
+import Category from '../Model/Category.js';
+import OrderStatus from '../Model/OrderStatus.js';
 
 mongoose.connect('mongodb://localhost:27017/aji-db');
 
@@ -48,4 +48,4 @@ async function run() {
 }
 
 
-module.exports = run;
+export default run;

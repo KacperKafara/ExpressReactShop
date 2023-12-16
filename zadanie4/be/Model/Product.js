@@ -1,48 +1,43 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const Category = require('./Category');
+import mongoose from 'mongoose';
+import Category from './Category';
+
+const { Schema } = mongoose;
 
 const productSchema = new Schema({
     name: {
         type: String,
         required: true,
         validate: {
-            validator: v => {
-                return /\S/.test(v);
-            }
+            validator: v => /\S/.test(v),
         },
     },
     description: {
         type: String,
         required: true,
         validate: {
-            validator: v => {
-                return /\S/.test(v);
-            }
+            validator: v => /\S/.test(v),
         },
     },
     price: {
         type: Number,
         required: true,
         validate: {
-            validator: v => {
-                return v > 0;
-            }
-        }
+            validator: v => v > 0,
+        },
     },
     weight: {
         type: mongoose.Types.Decimal128,
         required: true,
         validate: {
-            validator: v => {
-                return v > 0;
-            }
-        }
+            validator: v => v > 0,
+        },
     },
     category: {
         type: Category.schema,
         required: true,
     },
-})
+});
 
-module.exports = mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
+
+export default Product;
