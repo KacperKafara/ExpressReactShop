@@ -34,7 +34,7 @@ const orderSchema = new Schema({
             }
         },
     },
-    orders: [
+    products: [
         {
             product: {
                 type: Product.schema,

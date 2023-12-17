@@ -8,7 +8,7 @@ import {
     getStatusCode,
 } from 'http-status-codes';
 
-function handleError(error) {
+function handleError(error, res) {
     if (error.name == 'ValidationError') {
         const validationErrors = Object.values(error.errors).map((validationError) => validationError.message);
         return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Validation error.', errors: validationErrors });
@@ -39,7 +39,7 @@ export const getProductById = async (req, res) => {
             return res.status(StatusCodes.NO_CONTENT).json(null);
         }
     } catch (error) {
-        handleError(error);
+        handleError(error, res);
     }
 }
 
@@ -64,7 +64,7 @@ export const addProduct = async (req, res) => {
         return res.status(StatusCodes.CREATED).json(product);
 
     } catch (error) {
-        handleError(error);
+        handleError(error, res);
     }
 }
 
@@ -92,6 +92,6 @@ export const updateProduct = async (req, res) => {
         const updatedProduct = await product.save();
         return res.status(StatusCodes.OK).json(updatedProduct);
     } catch (error) {
-        handleError(error);
+        handleError(error, res);
     }
 }
