@@ -1,4 +1,4 @@
-import OrderStatusRepo from '../Model/OrderStatus.js';
+import { OrderStatus as OrderStatusRepo } from '../Model/OrderStatus.js';
 import {
     ReasonPhrases,
     StatusCodes,

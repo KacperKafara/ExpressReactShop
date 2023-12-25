@@ -1,5 +1,5 @@
 import OrderRepo from '../Model/Order.js';
-import OrderStatusRepo from '../Model/OrderStatus.js';
+import { OrderStatus as OrderStatusRepo, OrderStatusValue } from '../Model/OrderStatus.js';
 import ProductRepo from '../Model/Product.js';
 import {
     ReasonPhrases,
@@ -118,6 +118,42 @@ export const addOrder = async (req, res) => {
             products: productsArray,
         });
         return res.status(StatusCodes.CREATED).json(order);
+    } catch (error) {
+        handleError(error, res);
+    }
+}
+
+export const changeStatus = async (req, res) => {
+    try {
+        const orderId = req.params.id;
+        if (!orderId) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Order id is missing.' });
+        }
+        if (!req.body) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Order data is missing.' });
+        }
+
+        const order = await OrderRepo.findById(orderId);
+        if (!order) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Order with given id does not exist.' });
+        }
+
+        const { orderStatusId } = req.body;
+        const orderStatus = await OrderStatusRepo.findById(orderStatusId);
+        if (!orderStatus) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Status with given id does not exist.' });
+        }
+
+        if (OrderStatusValue[orderStatus.name] < OrderStatusValue[order.orderStatus.name]) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: `Failed to change status from ${order.orderStatus.name} to ${orderStatus.name}` });
+        }
+
+        order.orderStatus = orderStatus;
+        const updatedOrder = await order.save();
+        return res.status(StatusCodes.OK).json(updatedOrder);
+
+
+
     } catch (error) {
         handleError(error, res);
     }

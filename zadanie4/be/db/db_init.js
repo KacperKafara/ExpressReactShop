@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Category from '../Model/Category.js';
-import OrderStatus from '../Model/OrderStatus.js';
+import { OrderStatus, OrderStatusValue } from '../Model/OrderStatus.js';
 
 mongoose.connect('mongodb://localhost:27017/aji-db');
 
@@ -30,8 +30,8 @@ async function run() {
         name: 'Spices',
     });
 
-    const pendingStatus = await OrderStatus.create({
-        name: 'PENDING',
+    const unapprovedStatus = await OrderStatus.create({
+        name: 'UNAPPROVED',
     });
 
     const approvedStatus = await OrderStatus.create({
@@ -45,6 +45,8 @@ async function run() {
     const completedStatus = await OrderStatus.create({
         name: 'COMPLETED',
     });
+
+    console.log(OrderStatusValue[completedStatus.name])
 }
 
 

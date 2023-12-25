@@ -6,10 +6,17 @@ const orderStatusSchema = new Schema({
     name: {
         type: String,
         required: true,
-        enum: ['PENDING', 'APPROVED', 'CANCELLED', 'COMPLETED'],
+        enum: ['UNAPPROVED', 'APPROVED', 'CANCELLED', 'COMPLETED'],
     }
 });
 
 const OrderStatus = mongoose.model('OrderStatus', orderStatusSchema);
 
-export default OrderStatus;
+const OrderStatusValue = {
+    UNAPPROVED: 1,
+    APPROVED: 2,
+    CANCELLED: 3,
+    COMPLETED: 4
+};
+
+export { OrderStatus, OrderStatusValue };
