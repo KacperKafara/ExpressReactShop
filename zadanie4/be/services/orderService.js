@@ -110,7 +110,7 @@ export const addOrder = async (req, res) => {
         }
 
         const order = await OrderRepo.create({
-            approvalDate: new Date(approvalDate),
+            approvalDate: approvalDate == null ? null : new Date(approvalDate),
             orderStatus: orderStatus,
             username: username,
             email: email,
@@ -142,6 +142,10 @@ export const changeStatus = async (req, res) => {
         const orderStatus = await OrderStatusRepo.findById(orderStatusId);
         if (!orderStatus) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Status with given id does not exist.' });
+        }
+
+        if (OrderStatusValue[orderStatus.name] == 3) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Cannot change the status of an order that has been canceled.' })
         }
 
         if (OrderStatusValue[orderStatus.name] < OrderStatusValue[order.orderStatus.name]) {
