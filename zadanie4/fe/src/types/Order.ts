@@ -2,7 +2,7 @@ import { OrderStatus } from "./OrderStatus";
 import { Product } from "./Product";
 
 export interface Order {
-    id: string,
+    _id: string,
     approvalDate: Date,
     orderStatus: OrderStatus,
     username: string,

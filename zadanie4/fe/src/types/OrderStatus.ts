@@ -1,6 +1,6 @@
 import { OrderStatusEnum } from '../enums/OrderStatus.enum';
 
 export interface OrderStatus {
-    id: string,
+    _id: string,
     name: OrderStatusEnum,
 }

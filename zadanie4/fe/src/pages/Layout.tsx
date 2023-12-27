@@ -10,7 +10,7 @@ const Layout: FC<Props> = ({ button, children }) => {
     return (
         <div className="bg-dark_gray text-white_text h-screen flex flex-col items-center">
             <Nav button={button} />
-            <main>{children}</main>
+            <main className="w-9/12">{children}</main>
         </div>
     );
 }
