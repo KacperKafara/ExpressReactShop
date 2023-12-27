@@ -6,6 +6,7 @@ import NavButton from '../../components/NavButton';
 import { CiShoppingCart } from "react-icons/ci";
 import { useNavigate } from 'react-router-dom';
 import { Category } from '../../types/Category';
+import { LocalStorageProduct } from '../../types/LocalStorageProduct';
 
 const MainPage: FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -44,7 +45,20 @@ const MainPage: FC = () => {
     };
 
     const handleBuy = (id: string) => {
-        console.log(id);
+        const existingProducts = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        const isProductInCart = existingProducts.some((product: LocalStorageProduct) => product.product._id === id);
+
+        if (!isProductInCart) {
+            const product = products.find((p) => p._id === id);
+            if (product) {
+                existingProducts.push({
+                    product,
+                    quantity: 1
+                });
+                localStorage.setItem('cart', JSON.stringify(existingProducts));
+            }
+        }
     }
 
     const filterProducts = products.filter((product) => {
