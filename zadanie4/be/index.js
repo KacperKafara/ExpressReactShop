@@ -12,6 +12,12 @@ import orderController from './controllers/orderController.js';
 
 const app = express();
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
 const PORT = 3000;
 
 app.use('/status', statusController);

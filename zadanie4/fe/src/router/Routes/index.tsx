@@ -8,6 +8,6 @@ export const RoutesComponent: FC = () => (
         {publicRoutes.map(({ path, Component }) => (
             <Route key={path} path={path} element={<Component />} />
         ))}
-        <Route path="*" element={<Navigate to={Pathnames.main} replace />} />
+        <Route path='*' element={<Navigate to={Pathnames.main} replace />} />
     </Routes>
 )

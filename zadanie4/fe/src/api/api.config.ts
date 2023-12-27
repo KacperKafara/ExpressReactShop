@@ -1,9 +1,8 @@
 import axios from "axios";
 
-export const API_URL = 'localhost:3000';
+export const API_URL = 'http://localhost:3000';
 
 export const DEFAULT_HEADERS = {
-    Accept: 'application/json',
     'Content-type': 'application/json',
 }
 
