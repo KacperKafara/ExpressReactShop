@@ -1,9 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { API } from '../../api/api.config';
 import { Product } from '../../types/Product';
+import Layout from '../Layout';
+import NavButton from '../../components/NavButton';
+import { CiShoppingCart } from "react-icons/ci";
+import { useNavigate } from 'react-router-dom';
 
 const MainPage: FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
+    const navigation = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -19,19 +24,18 @@ const MainPage: FC = () => {
         fetchProducts();
     }, []);
 
+    const handleClick = () => {
+        navigation('/cart');
+    }
+
     console.log('Products:', products);
 
     return (
-        <div>
-            <h1>Product List</h1>
-            <ul>
-                {products.map((product, index) => (
-                    <li key={index}>
-                        {product.name} - {product.price}
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <Layout button={<NavButton onClick={handleClick} text='Cart' icon={<CiShoppingCart />} />}>
+            <div>
+                Main Page
+            </div>
+        </Layout>
     );
 };
 
