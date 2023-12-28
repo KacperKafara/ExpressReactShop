@@ -6,10 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import { LocalStorageProduct } from '../../types/LocalStorageProduct';
 import FormInput from '../../components/FormInput';
 import Error from '../../components/Error';
+import { OrderStatus } from '../../types/OrderStatus';
+import { API } from '../../api/api.config';
 
 const CartPage: FC = () => {
     const navigation = useNavigate();
     const [products, setProducts] = useState<LocalStorageProduct[]>([]);
+    const [status, setStatus] = useState<OrderStatus[]>([]);
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -18,6 +21,16 @@ const CartPage: FC = () => {
     const [isEmptyCart, setIsEmptyCart] = useState<boolean>(false);
 
     useEffect(() => {
+        const handleStatus = async () => {
+            try {
+                const response = await API.get('/status');
+                const data = response.data as OrderStatus[];
+                setStatus(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        handleStatus();
         const existingProducts = JSON.parse(localStorage.getItem('cart') || '[]');
         setProducts(existingProducts);
     }, []);
@@ -37,15 +50,42 @@ const CartPage: FC = () => {
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+        const handleBuy = async () => {
+            const existingProducts = JSON.parse(localStorage.getItem('cart') || '[]');
+            const { username, email, phoneNumber } = formData;
+            const foundStatus = status.find((status) => status.name === 'UNAPPROVED')?._id;
+            const products = existingProducts.map((product: LocalStorageProduct) => {
+                return {
+                    productId: product.product._id,
+                    quantity: product.quantity
+                }
+            });
+            const requestBody = {
+                approvalDate: null,
+                orderStatusId: foundStatus,
+                username,
+                email,
+                phoneNumber,
+                products,
+            };
+            try {
+                const response = await API.post('/orders', requestBody);
+                const data = response.data;
+                console.log(data);
+                localStorage.removeItem('cart');
+                setProducts([]);
+                navigation('/');
+            } catch (error) {
+                console.error(error);
+            }
+        }
         e.preventDefault();
         if (products.length === 0) {
             setIsEmptyCart(true);
             return;
         }
-        console.log(formData);
-        localStorage.removeItem('cart');
-        setProducts([]);
-        navigation('/');
+        handleBuy();
     }
 
     return (
