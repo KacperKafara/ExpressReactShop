@@ -10,6 +10,7 @@ export default {
                 dark_gray: "#0f111a",
                 nice_green: "#38d8a8",
                 white_text: "#efefef",
+                nice_red: "#A9182B",
             }
         },
     },
