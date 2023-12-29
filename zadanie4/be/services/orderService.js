@@ -7,6 +7,7 @@ import {
     getReasonPhrase,
     getStatusCode,
 } from 'http-status-codes';
+import jsonpatch from 'fast-json-patch';
 
 function handleError(error, res) {
     if (error.name == 'ValidationError') {
@@ -132,32 +133,31 @@ export const changeStatus = async (req, res) => {
         if (!req.body) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Order data is missing.' });
         }
-
         const order = await OrderRepo.findById(orderId);
         if (!order) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Order with given id does not exist.' });
         }
 
-        const { orderStatusId } = req.body;
-        const orderStatus = await OrderStatusRepo.findById(orderStatusId);
-        if (!orderStatus) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Status with given id does not exist.' });
-        }
+        let orderStatus;
 
+        for (const obj of req.body) {
+            if (obj.path == '/orderStatus') {
+                orderStatus = await OrderStatusRepo.findById(obj.value);
+                if (!orderStatus) {
+                    return res.status(StatusCodes.NOT_FOUND).json({ message: 'Order status with given id does not exists.' });
+                }
+                obj.value = orderStatus;
+            }
+        }
         if (OrderStatusValue[orderStatus.name] == 3) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Cannot change the status of an order that has been canceled.' })
-        }
-
-        if (OrderStatusValue[orderStatus.name] < OrderStatusValue[order.orderStatus.name]) {
+        } else if (OrderStatusValue[orderStatus.name] < OrderStatusValue[order.orderStatus.name]) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: `Failed to change status from ${order.orderStatus.name} to ${orderStatus.name}` });
         }
 
-        order.orderStatus = orderStatus;
+        jsonpatch.applyPatch(order, req.body);
         const updatedOrder = await order.save();
         return res.status(StatusCodes.OK).json(updatedOrder);
-
-
-
     } catch (error) {
         handleError(error, res);
     }
