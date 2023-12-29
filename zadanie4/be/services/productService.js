@@ -1,6 +1,7 @@
 import ProductRepo from '../Model/Product.js';
 import CategoryRepo from '../Model/Category.js';
-import lodash from 'lodash';
+import jsonpatch from 'fast-json-patch';
+
 import {
     ReasonPhrases,
     StatusCodes,
@@ -71,27 +72,31 @@ export const addProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const productId = req.params.id;
-        const product = await ProductRepo.findById(productId);
+        let product = await ProductRepo.findById(productId);
 
         if (!product) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Product with given ID does not exists.' });
         }
 
-        const updateData = req.body;
-
-        if (updateData.categoryId) {
-            const category = await CategoryRepo.findById(updateData.categoryId);
-            if (!category) {
-                return res.status(StatusCodes.NOT_FOUND).json({ message: 'Category with given ID does not exist.' });
-            }
-
-            product.category = category;
+        if (!req.body) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Product data is missing.' });
         }
 
-        lodash.merge(product, updateData);
+        for (const obj of req.body) {
+            if (obj.path == '/category') {
+                const category = await CategoryRepo.findById(obj.value);
+                if (!category) {
+                    return res.status(StatusCodes.NOT_FOUND).json({ message: 'Category with given id does not exists.' });
+                }
+                obj.value = category;
+            }
+        }
+        jsonpatch.applyPatch(product, req.body);
+
         const updatedProduct = await product.save();
         return res.status(StatusCodes.OK).json(updatedProduct);
     } catch (error) {
+        console.log(error);
         handleError(error, res);
     }
 }
