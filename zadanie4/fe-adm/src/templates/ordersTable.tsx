@@ -4,8 +4,12 @@ import { Order } from "../types/Order";
 import Cell from "../components/Cell";
 import { OrderStatus } from "../types/OrderStatus";
 
-const OrdersTable: FC = () => {
-    const [orders, setOrders] = useState<Order[]>([]);
+interface OrdersTableProps {
+    orders: Order[];
+    setOrders: (orders: Order[]) => void;
+}
+
+const OrdersTable: FC<OrdersTableProps> = ({ orders, setOrders }) => {
     const [canceledStatus, setCanceledStatus] = useState<OrderStatus>();
     const [completedStatus, setCompletedStatus] = useState<OrderStatus>();
 
@@ -23,17 +27,6 @@ const OrdersTable: FC = () => {
     }
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const response = await API.get('/orders');
-                let data = response.data as Order[];
-                data = data.filter(order => order.orderStatus.name != 'COMPLETED' && order.orderStatus.name != 'CANCELLED');
-                setOrders(data);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
         const fetchStatuses = async () => {
             try {
                 const response = await API.get('/status/');
@@ -48,7 +41,6 @@ const OrdersTable: FC = () => {
         }
 
         fetchStatuses();
-        fetchOrders();
     }, []);
 
     const handleClick = async (id: string, status: OrderStatus) => {
@@ -95,8 +87,8 @@ const OrdersTable: FC = () => {
                         </Cell>
                         <Cell>
                             <div className="flex justify-around">
-                                <button className='text-white font-bold py-2 px-4 rounded border hover:border-nice_green' onClick={() => { completedStatus && handleClick(order._id, completedStatus) }}>Approve</button>
-                                <button className='text-white font-bold py-2 px-4 rounded border hover:border-red-600' onClick={() => { canceledStatus && handleClick(order._id, canceledStatus) }}>Reject</button>
+                                <button className='text-white font-bold py-2 px-4 rounded border hover:border-nice_green' onClick={() => { completedStatus && handleClick(order._id, completedStatus) }}>Complete</button>
+                                <button className='text-white font-bold py-2 px-4 rounded border hover:border-red-600' onClick={() => { canceledStatus && handleClick(order._id, canceledStatus) }}>Cancel</button>
                             </div>
                         </Cell>
                     </tr>
