@@ -7,24 +7,13 @@ import { OrderStatus } from "../types/OrderStatus";
 interface OrdersTableProps {
     orders: Order[];
     setOrders: (orders: Order[]) => void;
+    calculateOrderTotal: (order: Order) => number;
+    formatOrderDate: (date: Date) => string;
 }
 
-const OrdersTable: FC<OrdersTableProps> = ({ orders, setOrders }) => {
+const OrdersTable: FC<OrdersTableProps> = ({ orders, setOrders, calculateOrderTotal, formatOrderDate }) => {
     const [canceledStatus, setCanceledStatus] = useState<OrderStatus>();
     const [completedStatus, setCompletedStatus] = useState<OrderStatus>();
-
-    const calculateOrderTotal = (order: Order) => {
-        let total = 0;
-        order.products.forEach(product => {
-            total += product.product.price * product.quantity;
-        });
-        return total;
-    }
-
-    const formatOrderDate = (date: Date) => {
-        const dateObj = new Date(date);
-        return dateObj.toLocaleDateString('pl-PL');
-    }
 
     useEffect(() => {
         const fetchStatuses = async () => {

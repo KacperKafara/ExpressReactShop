@@ -4,6 +4,7 @@ import ProductsTable from "../../templates/productsTable";
 import OrdersTable from "../../templates/ordersTable";
 import { Order } from "../../types/Order";
 import { API } from "../../api/api.config";
+import OrdersByStatusTable from "../../templates/ordersByStatusTable";
 
 const Home: FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -21,11 +22,25 @@ const Home: FC = () => {
         fetchOrders();
     }, []);
 
+    const calculateOrderTotal = (order: Order) => {
+        let total = 0;
+        order.products.forEach(product => {
+            total += product.product.price * product.quantity;
+        });
+        return total;
+    }
+
+    const formatOrderDate = (date: Date) => {
+        const dateObj = new Date(date);
+        return dateObj.toLocaleDateString('pl-PL');
+    }
+
     return (
         <Layout>
             <>
                 <ProductsTable />
-                <OrdersTable orders={orders} setOrders={setOrders} />
+                <OrdersTable orders={orders} setOrders={setOrders} calculateOrderTotal={calculateOrderTotal} formatOrderDate={formatOrderDate} />
+                <OrdersByStatusTable orders={orders} calculateOrderTotal={calculateOrderTotal} formatOrderDate={formatOrderDate} />
             </>
         </Layout>
     );

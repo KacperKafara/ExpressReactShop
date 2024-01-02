@@ -9,15 +9,25 @@ import statusController from './controllers/statusController.js';
 import categoryController from './controllers/categoryController.js';
 import productController from './controllers/productController.js';
 import orderController from './controllers/orderController.js';
+import cors from 'cors';
+
+const whiteList = ['http://localhost:5174', 'http://localhost:5173'];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whiteList.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    optionsSuccessStatus: 200
+}
 
 const app = express();
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
+app.use(cors(corsOptions));
 const PORT = 3000;
 
 app.use('/status', statusController);
