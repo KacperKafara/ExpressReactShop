@@ -9,12 +9,11 @@ import OrdersByStatusTable from "../../templates/ordersByStatusTable";
 const Home: FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     useEffect(() => {
+        console.log('Home useEffect');
         const fetchOrders = async () => {
             try {
                 const response = await API.get('/orders');
-                let data = response.data as Order[];
-                data = data.filter(order => order.orderStatus.name != 'COMPLETED' && order.orderStatus.name != 'CANCELLED');
-                setOrders(data);
+                setOrders(response.data as Order[]);
             } catch (error) {
                 console.error(error);
             }

@@ -149,7 +149,7 @@ export const changeStatus = async (req, res) => {
                 obj.value = orderStatus;
             }
         }
-        if (OrderStatusValue[orderStatus.name] == 3) {
+        if (OrderStatusValue[order.orderStatus.name] == 3) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Cannot change the status of an order that has been canceled.' })
         } else if (OrderStatusValue[orderStatus.name] < OrderStatusValue[order.orderStatus.name]) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: `Failed to change status from ${order.orderStatus.name} to ${orderStatus.name}` });

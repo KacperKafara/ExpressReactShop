@@ -35,20 +35,21 @@ const OrdersTable: FC<OrdersTableProps> = ({ orders, setOrders, calculateOrderTo
     const handleClick = async (id: string, status: OrderStatus) => {
         const res = await API.get(`/orders/id/${id}`);
         const oldOrder = res.data as Order;
-        const order = orders.find(order => order._id === id);
-        if (!order || !oldOrder) {
+        const orderIndex = orders.findIndex(order => order._id === id);
+        if (orderIndex == -1 || !oldOrder) {
             console.error('Order not found');
             return;
         }
-        order.orderStatus = status;
+        const updatedOrders = [...orders];
+        updatedOrders[orderIndex].orderStatus = status;
         const diff = [{ op: 'replace', path: '/orderStatus', value: status._id }];
         try {
             await API.patch(`/orders/id/${id}`, diff);
+            setOrders(updatedOrders);
             alert('Order updated');
         } catch (error) {
             console.error(error);
         }
-        setOrders(orders.filter(order => order._id !== id));
     }
 
     return (
@@ -61,7 +62,7 @@ const OrdersTable: FC<OrdersTableProps> = ({ orders, setOrders, calculateOrderTo
                 </tr>
             </thead>
             <tbody>
-                {orders.map(order => (
+                {orders.filter(order => order.orderStatus.name !== 'COMPLETED' && order.orderStatus.name !== 'CANCELLED').map(order => (
                     <tr key={order._id}>
                         <Cell>{formatOrderDate(order.approvalDate)}</Cell>
                         <Cell>{calculateOrderTotal(order)}</Cell>

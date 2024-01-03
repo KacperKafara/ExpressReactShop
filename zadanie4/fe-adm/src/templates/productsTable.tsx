@@ -5,6 +5,12 @@ import Input from "../components/Input";
 import { compare } from "fast-json-patch";
 import Error from "../components/Error";
 import Cell from "../components/Cell";
+import { AxiosError } from "axios";
+
+interface ErrorType {
+    message: string;
+    errors: string[];
+}
 
 
 const ProductsTable: FC = () => {
@@ -21,6 +27,7 @@ const ProductsTable: FC = () => {
                 console.error(error);
             }
         }
+        setError('');
         fetchProducts();
     }, []);
 
@@ -42,23 +49,23 @@ const ProductsTable: FC = () => {
             console.error('Product not found');
             return;
         }
-        if (!product.name || !product.description || !product.price) {
-            setError('All fields are required');
-            return;
-        }
-        if (product.price < 1) {
-            setError('Price must be greater than 0');
-            return;
-        }
         const oldProduct = await API.get(`/products/${id}`) as Product;
         const diff = compare(oldProduct, product);
         try {
             await API.patch(`/products/${id}`, diff);
             alert('Product updated');
         } catch (error) {
-            console.error(error);
+            const err = error as AxiosError;
+            if (err.response && (err.response.data as ErrorType).errors) {
+                let msg = '';
+                (err.response.data as ErrorType).errors.forEach((e: string) => {
+                    msg += `${e}\n`;
+                });
+                setError(msg);
+            }
         }
     }
+
     return (
         <>
             {error && <Error value={error} />}

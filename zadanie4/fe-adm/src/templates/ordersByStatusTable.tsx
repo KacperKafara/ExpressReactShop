@@ -54,7 +54,7 @@ const OrdersByStatusTable: FC<Props> = ({ orders, calculateOrderTotal, formatOrd
             <table className='table-auto w-full'>
                 <thead>
                     <tr>
-                        <th className='px-4 py-2'>Order Date</th>
+                        <th className='px-4 py-2'>Approval Date</th>
                         <th className='px-4 py-2'>Total</th>
                     </tr>
                 </thead>
