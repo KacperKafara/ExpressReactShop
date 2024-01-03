@@ -15,7 +15,7 @@ function handleError(error, res) {
         return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Validation error.', errors: validationErrors });
     } else if (error.name == 'CastError') {
         return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Given ID is not type of ObjectID.' })
-    };
+    }
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
 }
 
@@ -33,10 +33,6 @@ export const getOrders = async (req, res) => {
 
 export const getOrderById = async (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Id is mandatory.' });
-        }
         const order = await OrderRepo.findById(id);
         if (order) {
             return res.status(StatusCodes.OK).json(order);
@@ -50,16 +46,11 @@ export const getOrderById = async (req, res) => {
 
 export const getOrdersByUsername = async (req, res) => {
     try {
-        const username = req.params.username;
-        if (!username) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Username is mandatory.' });
-        }
-
         const orders = await OrderRepo.find({ 'user.username': username });
         if (orders.length == 0) {
             return res.status(StatusCodes.NO_CONTENT).json(orders);
         }
-        else return res.status(StatusCodes.OK).json(orders);
+        return res.status(StatusCodes.OK).json(orders);
     } catch (error) {
         handleError(error, res);
     }
@@ -67,11 +58,6 @@ export const getOrdersByUsername = async (req, res) => {
 
 export const getOrdersByStatus = async (req, res) => {
     try {
-        const statusId = req.params.status;
-        if (!statusId) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Status is mandatory.' });
-        }
-
         const orders = await OrderRepo.find({ 'status.id': statusId });
         if (orders.length == 0) {
             return res.status(StatusCodes.NO_CONTENT).json(orders);
@@ -84,18 +70,15 @@ export const getOrdersByStatus = async (req, res) => {
 
 export const addOrder = async (req, res) => {
     try {
-        if (!req.body) {
+        if (Object.keys(req.body).length === 0) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Order data is missing.' });
         }
-
         const { approvalDate, orderStatusId, username, email, phoneNumber, products } = req.body;
         const orderStatus = await OrderStatusRepo.findById(orderStatusId);
         if (!orderStatus) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Order status with given id does not exists.' });
         }
-
         const productsArray = [];
-
         for (let element of products) {
             const productId = element.productId;
 
@@ -127,9 +110,6 @@ export const addOrder = async (req, res) => {
 export const changeStatus = async (req, res) => {
     try {
         const orderId = req.params.id;
-        if (!orderId) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Order id is missing.' });
-        }
         if (!req.body) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Order data is missing.' });
         }
@@ -137,9 +117,7 @@ export const changeStatus = async (req, res) => {
         if (!order) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Order with given id does not exist.' });
         }
-
         let orderStatus;
-
         for (const obj of req.body) {
             if (obj.path == '/orderStatus') {
                 orderStatus = await OrderStatusRepo.findById(obj.value);

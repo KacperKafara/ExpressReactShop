@@ -37,7 +37,7 @@ export const getProductById = async (req, res) => {
         if (product) {
             return res.status(StatusCodes.OK).json(product);
         } else {
-            return res.status(StatusCodes.NO_CONTENT).json(null);
+            return res.status(StatusCodes.NO_CONTENT).json(product);
         }
     } catch (error) {
         handleError(error, res);
@@ -46,7 +46,7 @@ export const getProductById = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
-        if (!req.body) {
+        if (Object.keys(req.body).length === 0) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Product data is missing.' });
         }
 
@@ -77,11 +77,9 @@ export const updateProduct = async (req, res) => {
         if (!product) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Product with given ID does not exists.' });
         }
-
-        if (!req.body) {
+        if (Object.keys(req.body).length === 0) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid request. Product data is missing.' });
         }
-
         for (const obj of req.body) {
             if (obj.path == '/category') {
                 const category = await CategoryRepo.findById(obj.value);
