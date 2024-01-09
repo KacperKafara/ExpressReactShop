@@ -32,6 +32,7 @@ export const getOrders = async (req, res) => {
 }
 
 export const getOrderById = async (req, res) => {
+    const id = req.params.id;
     try {
         const order = await OrderRepo.findById(id);
         if (order) {
@@ -118,6 +119,7 @@ export const changeStatus = async (req, res) => {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Order with given id does not exist.' });
         }
         let orderStatus;
+        console.log(req.body);
         for (const obj of req.body) {
             if (obj.path == '/orderStatus') {
                 orderStatus = await OrderStatusRepo.findById(obj.value);

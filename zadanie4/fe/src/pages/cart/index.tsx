@@ -19,6 +19,7 @@ const CartPage: FC = () => {
         phoneNumber: ''
     });
     const [isEmptyCart, setIsEmptyCart] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean>(false);
 
     useEffect(() => {
         const handleStatus = async () => {
@@ -40,6 +41,10 @@ const CartPage: FC = () => {
     }
 
     function handleQuantityChange(productId: string, quantity: number): void {
+        if (quantity < 1) {
+            setIsError(true);
+            return;
+        }
         const existingProducts = JSON.parse(localStorage.getItem('cart') || '[]');
         const product = existingProducts.find((p: LocalStorageProduct) => p.product._id === productId);
         if (product) {
@@ -91,6 +96,7 @@ const CartPage: FC = () => {
     return (
         <Layout button={<NavButton onClick={handleClick} text='Home Page' icon={<FaHome />} />}>
             <>
+                {isError && <Error value='Quantity must be greater than 0' />}
                 {isEmptyCart && <Error value='Cart is empty' />}
                 <table className='table-auto mt-5 w-full'>
                     <thead>

@@ -13,7 +13,7 @@ interface Props {
 
 const OrdersByStatusTable: FC<Props> = ({ orders, calculateOrderTotal, formatOrderDate }) => {
     const [status, setStatus] = useState<OrderStatus[]>();
-    const [currentStatus, setCurrentStatus] = useState<OrderStatus>();
+    // const [currentStatus, setCurrentStatus] = useState<OrderStatus>();
     const [currentOrders, setCurrentOrders] = useState<Order[]>([]);
 
     const filterOrders = (selectedStatus: OrderStatus | undefined) => {
@@ -21,27 +21,25 @@ const OrdersByStatusTable: FC<Props> = ({ orders, calculateOrderTotal, formatOrd
         setCurrentOrders(filteredOrders);
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedStatusId = e.target.value;
         const selectedStatus = status?.find(s => s._id === selectedStatusId);
-        setCurrentStatus(selectedStatus);
         filterOrders(selectedStatus);
     }
 
     useEffect(() => {
         const fetchStatuses = async () => {
             try {
-                const response = await API.get('/status');
+                const response = await API.get('/status/');
                 const data = response.data as OrderStatus[];
                 setStatus(data);
-                setCurrentStatus(data[0]);
             } catch (error) {
                 console.error(error);
             }
         }
 
         fetchStatuses();
-    }, [currentStatus, orders]);
+    }, []);
 
     return (
         <div className="mt-6">
